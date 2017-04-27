@@ -3,8 +3,7 @@
  *  We provide an example of simple initializer that generates points withing a cube.
  */
 
-
-function VoidInitializer ( opts ) {
+ function VoidInitializer ( opts ) {
     this._opts = opts;
     return this;
 };
@@ -20,7 +19,9 @@ function SphereInitializer ( opts ) {
     this._opts = opts;
     return this;
 };
-
+function randomInRange(min, max) {
+  return Math.random() < 0.5 ? ((1-Math.random()) * (max-min) + min) : (Math.random() * (max-min) + min);
+}
 SphereInitializer.prototype.initializePositions = function ( positions, toSpawn) {
     var base = this._opts.sphere;
     var base_pos = new THREE.Vector3( base.x, base.y, base.z );
@@ -28,10 +29,10 @@ SphereInitializer.prototype.initializePositions = function ( positions, toSpawn)
     for ( var i = 0 ; i < toSpawn.length ; ++i ) {
         var idx = toSpawn[i];
         // ----------- STUDENT CODE BEGIN ------------
-        // for now we just generate a random point in the unit cube; needs to be fixed
-        var pos = new THREE.Vector3( 1.0 - 2.0 * Math.random(),
-                                     1.0 - 2.0 * Math.random(),
-                                     1.0 - 2.0 * Math.random() );
+        var theta = 2 * Math.PI * randomInRange(0.0, 1.0);
+        var phi = Math.acos(1.0 - 2.0 * randomInRange(0.0, 1.0));
+
+        var pos = new THREE.Vector3(Math.sin(phi) * Math.cos(theta), Math.sin(phi) * Math.sin(theta), Math.cos(phi));
 
         // ----------- STUDENT CODE END ------------
         setElement( idx, positions, pos );
@@ -47,7 +48,7 @@ SphereInitializer.prototype.initializeVelocities = function ( velocities, positi
         // ----------- STUDENT CODE BEGIN ------------
         // just to get started, make the velocity the same as the initial position
         var pos = getElement( idx, positions );
-        var vel = pos.clone().multiplyScalar(5.0);
+        var vel = pos.clone().multiplyScalar(10.0);
 
 
 
@@ -132,8 +133,8 @@ FountainInitializer.prototype.initializePositions = function ( positions, toSpaw
         // ----------- STUDENT CODE BEGIN ------------
 
         var pos = new THREE.Vector3( 1.0 - 2.0 * Math.random(),
-                                     1.0 - 2.0 * Math.random(),
-                                     1.0 - 2.0 * Math.random() );
+           1.0 - 2.0 * Math.random(),
+           1.0 - 2.0 * Math.random() );
 
         // ----------- STUDENT CODE END ------------
         setElement( idx, positions, pos );
@@ -222,37 +223,37 @@ function AnimationInitializer ( opts ) {
 // we recommend that you do not look too closely in here ;-)
 AnimationInitializer.prototype.getMorphedMesh = function () {
 
-     if ( ParticleEngine._meshes[0] !== undefined  && ParticleEngine._animations[0] !== undefined){
+   if ( ParticleEngine._meshes[0] !== undefined  && ParticleEngine._animations[0] !== undefined){
 
-        var mesh       = ParticleEngine._meshes[0];
+    var mesh       = ParticleEngine._meshes[0];
 
-        var vertices   = [];
-        var n_vertices = mesh.geometry.vertices.length;
+    var vertices   = [];
+    var n_vertices = mesh.geometry.vertices.length;
 
-        var faces      = ParticleEngine._meshes[0].geometry.faces;
+    var faces      = ParticleEngine._meshes[0].geometry.faces;
 
-        var morphInfluences = ParticleEngine._meshes[0].morphTargetInfluences;
-        var morphs          = ParticleEngine._meshes[0].geometry.morphTargets;
+    var morphInfluences = ParticleEngine._meshes[0].morphTargetInfluences;
+    var morphs          = ParticleEngine._meshes[0].geometry.morphTargets;
 
-        if ( morphs === undefined ) {
-            return undefined;
-        }
-        for ( var i = 0 ; i < morphs.length ; ++i ) {
+    if ( morphs === undefined ) {
+        return undefined;
+    }
+    for ( var i = 0 ; i < morphs.length ; ++i ) {
 
-            if ( morphInfluences[i] !== 0.0 ) {
-                for ( var j = 0 ; j < n_vertices ; ++j ) {
-                    vertices[j] = new THREE.Vector3( 0.0, 0.0, 0.0 );
-                    vertices[j].add ( morphs[i].vertices[j] );
-                }
+        if ( morphInfluences[i] !== 0.0 ) {
+            for ( var j = 0 ; j < n_vertices ; ++j ) {
+                vertices[j] = new THREE.Vector3( 0.0, 0.0, 0.0 );
+                vertices[j].add ( morphs[i].vertices[j] );
             }
         }
-        return { vertices : vertices, faces : faces, scale: mesh.scale, position: mesh.position };
-
-    } else {
-
-        return undefined;
-
     }
+    return { vertices : vertices, faces : faces, scale: mesh.scale, position: mesh.position };
+
+} else {
+
+    return undefined;
+
+}
 }
 
 
