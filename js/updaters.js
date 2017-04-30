@@ -106,9 +106,9 @@ EulerUpdater.prototype.updateVelocities = function ( particleAttributes, alive, 
         var p = getElement( i, positions );
         var v = getElement( i, velocities );
         // now update velocity based on forces...
-		var g = (new THREE.Vector3().copy(gravity)).multiplyScalar(delta_t/2); //no divide by 2?
+		var g = (new THREE.Vector3().copy(gravity)).multiplyScalar(delta_t); //no divide by 2?
 		v.add(g);
-		v.add(new THREE.Vector3(0.1,0,0));
+		//v.add(new THREE.Vector3(0.1,0,0));
 		
 	/*	for (var j = 0; j < attractors.length; j++) {
 			var r = attractors[j].radius();

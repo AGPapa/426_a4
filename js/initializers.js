@@ -132,9 +132,10 @@ FountainInitializer.prototype.initializePositions = function ( positions, toSpaw
         var idx = toSpawn[i];
         // ----------- STUDENT CODE BEGIN ------------
 
-        var pos = new THREE.Vector3( 1.0 - 2.0 * Math.random(),
-           1.0 - 2.0 * Math.random(),
-           1.0 - 2.0 * Math.random() );
+		var pos = base_pos;
+     //   var pos = new THREE.Vector3( 1.0 - 2.0 * Math.random(),
+     //      1.0 - 2.0 * Math.random(),
+      //     1.0 - 2.0 * Math.random() );
 
         // ----------- STUDENT CODE END ------------
         setElement( idx, positions, pos );
@@ -148,8 +149,11 @@ FountainInitializer.prototype.initializeVelocities = function ( velocities, posi
     for ( var i = 0 ; i < toSpawn.length ; ++i ) {
         var idx = toSpawn[i];
         // ----------- STUDENT CODE BEGIN ------------
-        var vel = base_vel;
+        var vel = (new THREE.Vector3()).copy(base_vel);
 
+		var scale = vel.length();
+		vel.add(new THREE.Vector3((0.5 - Math.random())*scale, (0.5 - Math.random())*scale/4, (0.5 - Math.random())*scale));
+		
         // ----------- STUDENT CODE END ------------
         setElement( idx, velocities, vel );
     }
