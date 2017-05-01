@@ -275,16 +275,37 @@ AnimationInitializer.prototype.initializePositions = function ( positions, toSpa
 
         var randomFace = faces[Math.floor(Math.random()*faces.length)];
 
-        var p = mesh.vertices[randomFace.a].multiply(mesh.scale);
+        //var p = mesh.vertices[randomFace.a].multiply(mesh.scale);
         //console.log(mesh.scale);
         var r1 = Math.random();
         var r2 = Math.random();
+
+        if (r1 + r2 >= 1.0) {
+            r1 = 1.0 - r1;
+            r2 = 1.0 - r2;
+        }
+
         var a = mesh.vertices[randomFace.a];
         var b = mesh.vertices[randomFace.b];
         var c = mesh.vertices[randomFace.c];
 
-        //p = a.multiplyScalar(1.0 - Math.sqrt(r1)).add(b.multiplyScalar(Math.sqrt(r1) * (1.0-r2))).add(c.multiplyScalar(r2 * Math.sqrt(r1)));
-        
+        /*var ab = new THREE.Vector3(0.0,0.0,0.0);
+        var ac = new THREE.Vector3(0.0,0.0,0.0);
+
+        ab.subVectors(a, b);
+        ac.subVectors(a, c);
+
+        ab.multiplyScalar(r1);
+        ac.multiplyScalar(r2);
+
+        var p = a.add(ab);
+        p.add(ac);
+        p.multiply(mesh.scale);*/
+
+        var p = a.multiplyScalar(1.0 - Math.sqrt(r1));
+        p.add(b.multiplyScalar(Math.sqrt(r1) * (1.0-r2)));
+        p.add(c.multiplyScalar(r2 * Math.sqrt(r1)));
+        p.multiply(mesh.scale);
         setElement( i, positions, p );
         // ----------- STUDENT CODE END ------------
 
