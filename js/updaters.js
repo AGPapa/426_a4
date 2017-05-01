@@ -258,7 +258,13 @@ ClothUpdater.prototype.calcHooke = function ( p, q ) {
     var k_s = this._k_s;
     var rest_len = this._s;
 
-    return THREE.Vector3();
+	var D = ((new THREE.Vector3()).copy(p)).sub(q);
+	var d = D.length();
+	D.normalize();
+	
+	var f = D.multiplyScalar(k_s*(d-rest_len));
+	
+    return f;
     // ----------- STUDENT CODE END ------------
 }
 
@@ -291,7 +297,35 @@ ClothUpdater.prototype.updateVelocities = function ( particleAttributes, alive, 
 
             // calculate forces on this node from neighboring springs 
             // (using this.calcHooke()... )
+			//4 neighbors
+			var idx_left = idx - 1;
+			var idx_right = idx + 1;
+			var idx_down = idx - width;
+			var idx_up = idx + width;
+			
+			if (idx_left > 0) {
+				var f_left = this.calcHooke(p, getElement(idx_left, positions));
+				//v.add(f_left);
+			}
+			if (idx_right < width*height) {
+				var f_right = this.calcHooke(p, getElement(idx_right, positions));
+				//v.add(f_right);
+			} 
+			if (idx_down > 0) {
+				var f_down = this.calcHooke(p, getElement(idx_down, positions));
+			//	v.add(f_down);
+			}
+			if (idx_up < width*height) {
+				var f_up = this.calcHooke(p, getElement(idx_up, positions));
+			//	v.add(f_up);
+			} 
 
+		/*	if (Math.random() < 0.0001) {
+				console.log(f_left);
+			}
+			*/
+
+			
 			var g = (new THREE.Vector3().copy(gravity)).multiplyScalar(delta_t); //no divide by 2?
 			v.add(g);
 		
