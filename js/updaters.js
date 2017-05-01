@@ -59,6 +59,16 @@ Collisions.BounceSphere = function ( particleAttributes, alive, delta_t, sphere,
         var pos = getElement( i, positions );
         var vel = getElement( i, velocities );
 
+		var c = new THREE.Vector3(sphere.x, sphere.y, sphere.z);
+		var p = (new THREE.Vector3()).copy(pos);
+		
+		var diff = p.sub(c);
+		var d = diff.length();
+		if (d < (1.001*sphere.w)) {
+			vel = (new THREE.Vector3(0,0,0));
+			pos = c.add(diff.normalize().multiplyScalar(sphere.w));
+		}
+		
         setElement( i, positions, pos );
         setElement( i, velocities, vel );
         // ----------- STUDENT CODE END ------------
@@ -282,6 +292,10 @@ ClothUpdater.prototype.updateVelocities = function ( particleAttributes, alive, 
             // calculate forces on this node from neighboring springs 
             // (using this.calcHooke()... )
 
+			var g = (new THREE.Vector3().copy(gravity)).multiplyScalar(delta_t); //no divide by 2?
+			v.add(g);
+		
+			
             setElement( idx, velocities, v );
             // ----------- STUDENT CODE END ------------
         }
