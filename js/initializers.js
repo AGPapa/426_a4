@@ -267,8 +267,24 @@ AnimationInitializer.prototype.initializePositions = function ( positions, toSpa
 
     for ( var i = 0 ; i < toSpawn.length ; ++i ) {
         // ----------- STUDENT CODE BEGIN ------------
-        var p = base_pos;
+        //var p = base_pos;
 
+        //var item = items[Math.floor(Math.random()*items.length)];
+
+        var faces = mesh.faces;
+
+        var randomFace = faces[Math.floor(Math.random()*faces.length)];
+
+        var p = mesh.vertices[randomFace.a].multiply(mesh.scale);
+        //console.log(mesh.scale);
+        var r1 = Math.random();
+        var r2 = Math.random();
+        var a = mesh.vertices[randomFace.a];
+        var b = mesh.vertices[randomFace.b];
+        var c = mesh.vertices[randomFace.c];
+
+        //p = a.multiplyScalar(1.0 - Math.sqrt(r1)).add(b.multiplyScalar(Math.sqrt(r1) * (1.0-r2))).add(c.multiplyScalar(r2 * Math.sqrt(r1)));
+        
         setElement( i, positions, p );
         // ----------- STUDENT CODE END ------------
 
