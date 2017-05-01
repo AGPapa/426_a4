@@ -36,6 +36,10 @@ Collisions.SinkPlane = function ( particleAttributes, alive, delta_t, plane  ) {
         // ----------- STUDENT CODE BEGIN ------------
         var pos = getElement( i, positions );
 
+		if (pos.y < plane.y) {
+			killPartilce(i, particleAttributes, alive)
+		}
+
         // ----------- STUDENT CODE END ------------
     }
 };
