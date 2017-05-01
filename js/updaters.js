@@ -21,6 +21,10 @@ Collisions.BouncePlane = function ( particleAttributes, alive, delta_t, plane,da
         var pos = getElement( i, positions );
         var vel = getElement( i, velocities );
 
+		if (pos.y < plane.y && vel.y < 0) {
+			vel = new THREE.Vector3(vel.x, -vel.y/1.5, vel.z);
+		}
+		
         setElement( i, positions, pos );
         setElement( i, velocities, vel );
         // ----------- STUDENT CODE END ------------
@@ -54,7 +58,6 @@ Collisions.BounceSphere = function ( particleAttributes, alive, delta_t, sphere,
         // ----------- STUDENT CODE BEGIN ------------
         var pos = getElement( i, positions );
         var vel = getElement( i, velocities );
-
 
         setElement( i, positions, pos );
         setElement( i, velocities, vel );
