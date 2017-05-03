@@ -65,6 +65,9 @@ Collisions.BounceSphere = function ( particleAttributes, alive, delta_t, sphere,
 		var diff = p.sub(c);
 		var d = diff.length();
 		if (d < (1.001*sphere.w)) {
+			//need to cancel out velocity in one direction
+//			var normal = diff.normalize()
+//			vel.sub(normal.multiplyScalar(vel.dot(normal)))
 			vel = (new THREE.Vector3(0,0,0));
 			pos = c.add(diff.normalize().multiplyScalar(sphere.w));
 		}
@@ -136,10 +139,6 @@ EulerUpdater.prototype.updateVelocities = function ( particleAttributes, alive, 
 			if (d > r) {
 				d -= r;
 				var a = diff.multiplyScalar(1/(d*d)).multiplyScalar(delta_t).multiplyScalar(100);
-				var rand = Math.random();
-				if (rand < 0.0001) {
-					console.log(a);
-				}
 				v.add(a);
 			}
 			
@@ -303,21 +302,23 @@ ClothUpdater.prototype.updateVelocities = function ( particleAttributes, alive, 
 			var idx_down = idx - width;
 			var idx_up = idx + width;
 			
-			if (idx_left > 0) {
+			if (idx_left > 0 && (i != 0)) { // check if on other side
 				var f_left = this.calcHooke(p, getElement(idx_left, positions));
-				//v.add(f_left);
+			//	if (f_left.length() < 1)
+					v.add(f_left.multiplyScalar(delta_t));
 			}
-			if (idx_right < width*height) {
+			if (idx_right < width*height && (i != width - 1)) { //check if on other side
 				var f_right = this.calcHooke(p, getElement(idx_right, positions));
-				//v.add(f_right);
+			//	if (f_right.length() < 1)
+					v.add(f_right.multiplyScalar(delta_t));
 			} 
 			if (idx_down > 0) {
 				var f_down = this.calcHooke(p, getElement(idx_down, positions));
-			//	v.add(f_down);
+				v.add(f_down.multiplyScalar(delta_t));
 			}
 			if (idx_up < width*height) {
 				var f_up = this.calcHooke(p, getElement(idx_up, positions));
-			//	v.add(f_up);
+				v.add(f_up.multiplyScalar(delta_t));
 			} 
 
 		/*	if (Math.random() < 0.0001) {
