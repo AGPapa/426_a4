@@ -310,22 +310,87 @@ SystemSettings.cloth = {
 // My System
 ////////////////////////////////////////////////////////////////////////////////
 
+function CustomSinCurve( scale ) {
+
+    THREE.Curve.call( this );
+
+    this.scale = ( scale === undefined ) ? 1 : scale;
+
+}
+
+CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
+CustomSinCurve.prototype.constructor = CustomSinCurve;
+
+CustomSinCurve.prototype.getPoint = function ( t ) {
+
+    var tx = t * 3 - 1.5;
+    var ty = Math.sin( 2 * Math.PI * t );
+    var tz = 0;
+
+    return new THREE.Vector3( tx, ty, tz ).multiplyScalar( this.scale );
+
+};
+
+
 SystemSettings.mySystem = {
 
-    // Particle Material
+    // Particle material
     particleMaterial :  SystemSettings.standardMaterial,
 
-    // Initializer
-    initializerFunction : VoidInitializer,
-    initializerSettings : {},
+    // Initialization
+    initializerFunction : FountainInitializer,
+    initializerSettings : {
+        sphere:   new THREE.Vector4 ( 0.0, 30.0, 0.0, 1.0 ),
+        color:    new THREE.Vector4 ( 0.0, 0.0, 1.0, 1.0 ),
+        velocity: new THREE.Vector3 ( 0.0, 30.0, 0.0),
+        lifetime: 7,
+        size:     5.0,
+    },
 
-    // Updater
-    updaterFunction : VoidUpdater,
-    updaterSettings : {},
+    // Update
+    updaterFunction : EulerUpdater,
+    updaterSettings : {
+        externalForces : {
+            gravity :     new THREE.Vector3( 0, -20, 0),
+            attractors : [],
+        },
+        collidables: {
+            bouncePlanes: [ {plane : new THREE.Vector4( 0, 1, 0, 0 ), damping : 0.8 } ],
+        },
+    },
 
     // Scene
-    maxParticles:  1000,
-    particlesFreq: 1000,
-    createScene : function () {},
+    maxParticles :  5000,
+    particlesFreq : 10000,
+    createScene : function () {
+        var plane_geo = new THREE.PlaneBufferGeometry( 1000, 1000, 1, 1 );
+        var phong     = new THREE.MeshPhongMaterial( {color: 0x444444, emissive: 0x222222, side: THREE.DoubleSide } );
+
+        var box_geo   = new THREE.BoxGeometry(10,30,10)
+
+        var path = new CustomSinCurve( 10 );
+        var tube_geo = new THREE.TubeGeometry( path, 20, 2, 8, false );
+        var tube = new THREE.Mesh( tube_geo, phong );
+        tube.position.set(0.0, 15.0, 20.0);
+
+        var plane     = new THREE.Mesh( plane_geo, phong );
+        var box       = new THREE.Mesh( box_geo, phong );
+        box.position.set( 0.0, 15.0, 0.0 );
+
+        var box2       = new THREE.Mesh( box_geo, phong );
+        box2.position.set( 15.0, 15.0, 0.0 );
+
+        var box3       = new THREE.Mesh( box_geo, phong );
+        box3.position.set( -15.0, 15.0, 0.0 );
+
+        plane.rotation.x = -1.57;
+        plane.position.y = 0;
+
+        Scene.addObject( plane );
+        Scene.addObject( box );
+        //Scene.addObject( box2 );
+        //Scene.addObject( box3 );
+        Scene.addObject( tube );
+    },
 
 };
