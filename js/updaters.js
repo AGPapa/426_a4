@@ -65,9 +65,6 @@ Collisions.BounceSphere = function ( particleAttributes, alive, delta_t, sphere,
 		var diff = p.sub(c);
 		var d = diff.length();
 		if (d < (1.001*sphere.w)) {
-			//need to cancel out velocity in one direction
-//			var normal = diff.normalize()
-//			vel.sub(normal.multiplyScalar(vel.dot(normal)))
 			vel = (new THREE.Vector3(0,0,0));
 			pos = c.add(diff.normalize().multiplyScalar(sphere.w));
 		}
@@ -261,7 +258,7 @@ ClothUpdater.prototype.calcHooke = function ( p, q ) {
 	var d = D.length();
 	D.normalize();
 	
-	var f = D.multiplyScalar(k_s*(d-rest_len));
+	var f = D.multiplyScalar(-60*k_s*(d-rest_len));
 	
     return f;
     // ----------- STUDENT CODE END ------------
