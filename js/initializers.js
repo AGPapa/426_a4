@@ -264,16 +264,44 @@ AnimationInitializer.prototype.getMorphedMesh = function () {
 AnimationInitializer.prototype.initializePositions = function ( positions, toSpawn, mesh ) {
 
     var base_pos = this._opts.position;
+    var faces = mesh.faces;
+    var faceAreas = [];
+    var sum = 0.0
+
+    for (var i = 0; i < faces.length; i++) {
+        var a = mesh.vertices[faces[i].a];
+        var b = mesh.vertices[faces[i].b];
+        var c = mesh.vertices[faces[i].c];
+
+        var ab = new THREE.Vector3(0.0, 0.0, 0.0).subVectors(b, a);
+        var ac = new THREE.Vector3(0.0, 0.0, 0.0).subVectors(c, a);
+
+        var theta = ab.angleTo(ac);
+
+        var area = 0.5 * ab.length() * ac.length() * Math.abs(Math.cos(theta));
+        faceAreas[i] = area;
+
+        sum += area;
+    }
+    for (var i = 0; i < faces.length; i++) {
+        faceAreas[i] /= sum;
+    }
 
     for ( var i = 0 ; i < toSpawn.length ; ++i ) {
         // ----------- STUDENT CODE BEGIN ------------
         //var p = base_pos;
 
-        //var item = items[Math.floor(Math.random()*items.length)];
+        var index = 0;
+        var r = Math.random(), s = 0;
+        for(var i = 0; i < faceAreas.length; i++) {
+            s += faceAreas[i];
+            if (r <= s) {
+                index = i;
+            }
+        }
 
-        var faces = mesh.faces;
-
-        var randomFace = faces[Math.floor(Math.random()*faces.length)];
+        //var randomFace = faces[Math.floor(Math.random()*faces.length)];
+        var randomFace = faces[index];
 
         //var p = mesh.vertices[randomFace.a].multiply(mesh.scale);
         //console.log(mesh.scale);
