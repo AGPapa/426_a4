@@ -136,7 +136,7 @@ EulerUpdater.prototype.updateVelocities = function ( particleAttributes, alive, 
 			var d = diff.length();
 			diff.normalize();
 			if (d > r) {
-				var a = diff.multiplyScalar(1/(d*d)).multiplyScalar(delta_t).multiplyScalar(r*r*r);
+				var a = diff.multiplyScalar(1/(d*d+r)).multiplyScalar(delta_t).multiplyScalar(r*r*r);
 				v.add(a);
 			}
 			
