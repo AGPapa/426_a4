@@ -157,7 +157,21 @@ EulerUpdater.prototype.updateColors = function ( particleAttributes, alive, delt
         // ----------- STUDENT CODE BEGIN ------------
         var c = getElement( i, colors );
 
-		var new_c = new THREE.Color().copy(c);
+		var r = c.x;
+		var g = c.y;
+		var b = c.z;
+		
+		r -= (delta_t/4);
+		if (r < 0) {
+			r = 0;
+			g -= (delta_t/4)
+			if (g < 0) {
+				g = 0;
+			}
+		}
+		
+		c.x = r;
+		c.y = g;
 		
         setElement( i, colors, c );
         // ----------- STUDENT CODE END ------------
