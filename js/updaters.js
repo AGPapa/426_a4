@@ -65,8 +65,10 @@ Collisions.BounceSphere = function ( particleAttributes, alive, delta_t, sphere,
 		var diff = p.sub(c);
 		var d = diff.length();
 		if (d < (1.001*sphere.w)) {
-			vel = (new THREE.Vector3(0,0,0));
-			pos = c.add(diff.normalize().multiplyScalar(sphere.w));
+	//		var n = (new THREE.Vector3().copy(diff)).normalize();
+	//		vel = vel.sub(n.multiplyScalar(vel.dot(n)));
+			vel = new THREE.Vector3(0,0,0);
+			pos = c.add(diff.normalize().multiplyScalar(sphere.w*1.001));
 		}
 		
         setElement( i, positions, pos );
@@ -134,8 +136,7 @@ EulerUpdater.prototype.updateVelocities = function ( particleAttributes, alive, 
 			var d = diff.length();
 			diff.normalize();
 			if (d > r) {
-				d -= r;
-				var a = diff.multiplyScalar(1/(d*d)).multiplyScalar(delta_t).multiplyScalar(100);
+				var a = diff.multiplyScalar(1/(d*d)).multiplyScalar(delta_t).multiplyScalar(r*r*r);
 				v.add(a);
 			}
 			
@@ -156,6 +157,8 @@ EulerUpdater.prototype.updateColors = function ( particleAttributes, alive, delt
         // ----------- STUDENT CODE BEGIN ------------
         var c = getElement( i, colors );
 
+		var new_c = new THREE.Color().copy(c);
+		
         setElement( i, colors, c );
         // ----------- STUDENT CODE END ------------
     }
