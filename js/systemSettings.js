@@ -355,7 +355,9 @@ SystemSettings.mySystem = {
             attractors : [],
         },
         collidables: {
-            bouncePlanes: [ {plane : new THREE.Vector4( 0, 1, 0, 0 ), damping : 0.8 } ],
+            bouncePlanes: [ {plane : new THREE.Vector4( 0, 1, 0, 0 ), damping : 0.5 } ],
+			bounceBox: [ {lower : new THREE.Vector3(-20, 0, -5), upper : new THREE.Vector3(-10, 30, 5), damping : 0.5 }, ],
+			sinkBox: [{lower : new THREE.Vector3(10, 0, -5), upper : new THREE.Vector3(20, 30, 5) }, ]
         },
     },
 
@@ -371,7 +373,7 @@ SystemSettings.mySystem = {
         var path = new CustomSinCurve( 10 );
         var tube_geo = new THREE.TubeGeometry( path, 20, 2, 8, false );
         var tube = new THREE.Mesh( tube_geo, phong );
-        tube.position.set(0.0, 15.0, 20.0);
+        tube.position.set(0.0, 75.0, 0.0);
 
         var plane     = new THREE.Mesh( plane_geo, phong );
         var box       = new THREE.Mesh( box_geo, phong );
@@ -387,9 +389,9 @@ SystemSettings.mySystem = {
         plane.position.y = 0;
 
         Scene.addObject( plane );
-        Scene.addObject( box );
-        //Scene.addObject( box2 );
-        //Scene.addObject( box3 );
+      //  Scene.addObject( box );
+        Scene.addObject( box2 );
+        Scene.addObject( box3 );
         Scene.addObject( tube );
     },
 

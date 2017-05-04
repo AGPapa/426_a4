@@ -9,6 +9,88 @@
 
 var Collisions = Collisions || {};
 
+Collisions.SinkBox = function ( particleAttributes, alive, delta_t, lower, upper) {
+	var positions    = particleAttributes.position;
+    var velocities   = particleAttributes.velocity;
+
+    for ( var i = 0 ; i < alive.length ; ++i ) {
+
+        if ( !alive[i] ) continue;
+        // ----------- STUDENT CODE BEGIN ------------
+        var pos = getElement( i, positions );
+        var vel = getElement( i, velocities );
+
+		if (pos.x > lower.x && pos.x < upper.x && pos.y > lower.y && pos.y < upper.y && pos.z > lower.z && pos.z < upper.z) {
+			killPartilce(i, particleAttributes, alive);			
+		}
+		
+        setElement( i, positions, pos );
+        setElement( i, velocities, vel );
+        // ----------- STUDENT CODE END ------------
+    }
+}
+
+Collisions.BounceBox = function ( particleAttributes, alive, delta_t, lower, upper, damping ) {
+    var positions    = particleAttributes.position;
+    var velocities   = particleAttributes.velocity;
+
+    for ( var i = 0 ; i < alive.length ; ++i ) {
+
+        if ( !alive[i] ) continue;
+        // ----------- STUDENT CODE BEGIN ------------
+        var pos = getElement( i, positions );
+        var vel = getElement( i, velocities );
+
+		if (pos.x > lower.x && pos.x < upper.x && pos.y > lower.y && pos.y < upper.y && pos.z > lower.z && pos.z < upper.z) {
+		
+			//find closest
+			var closest = 0;
+			var min_d = upper.y - pos.y;
+
+			if (upper.x - pos.x < min_d) {
+				min_d = upper.x - pos.x;
+				closest = 1;
+			}
+			if (upper.z - pos.z < min_d) {
+				min_d = upper.z - pos.z;
+				closest = 2;
+			}
+			if (pos.x - lower.x < min_d) {
+				min_d = pos.x - lower.x;
+				closest = 3;
+			}
+			if (pos.z - lower.z < min_d) {
+				min_d = pos.z - lower.z;
+				closest = 4;
+			}
+		
+			if (closest == 0 && vel.y < 0) {
+				vel = new THREE.Vector3(vel.x, -vel.y * damping, vel.z);
+			} 
+			
+			if (closest == 1 && vel.x < 0) {
+				vel = new THREE.Vector3(-vel.x * damping, vel.y, vel.z);
+			}
+			
+			if (closest == 2 && vel.z < 0) {
+				vel = new THREE.Vector3(vel.x, vel.y, -vel.z * damping);
+			}
+			
+			if (closest == 3 && vel.x > 0) {
+				vel = new THREE.Vector3(-vel.x * damping, vel.y, vel.z);
+			}
+			
+			if (closest == 4 && vel.z > 0) {
+				vel = new THREE.Vector3(vel.x, vel.y, -vel.z * damping);
+			}
+			
+		}
+		
+        setElement( i, positions, pos );
+        setElement( i, velocities, vel );
+        // ----------- STUDENT CODE END ------------
+    }
+};
 
 Collisions.BouncePlane = function ( particleAttributes, alive, delta_t, plane,damping ) {
     var positions    = particleAttributes.position;
@@ -22,7 +104,7 @@ Collisions.BouncePlane = function ( particleAttributes, alive, delta_t, plane,da
         var vel = getElement( i, velocities );
 
 		if (pos.y < plane.y && vel.y < 0) {
-			vel = new THREE.Vector3(vel.x, -vel.y/1.5, vel.z);
+			vel = new THREE.Vector3(vel.x, -vel.y * damping, vel.z);
 		}
 		
         setElement( i, positions, pos );
@@ -236,6 +318,24 @@ EulerUpdater.prototype.collisions = function ( particleAttributes, alive, delta_
             Collisions.Sphere( particleAttributes, alive, delta_t, this._opts.collidables.spheres[i] );
         }
     }
+	
+	if ( this._opts.collidables.bounceBox) {
+		for (var i = 0 ; i < this._opts.collidables.bounceBox.length ; ++i ) {
+			var lower = this._opts.collidables.bounceBox[i].lower;
+			var upper = this._opts.collidables.bounceBox[i].upper;
+            var damping = this._opts.collidables.bounceBox[i].damping;
+			Collisions.BounceBox( particleAttributes, alive, delta_t, lower, upper, damping );
+        }
+	}
+	
+	if ( this._opts.collidables.sinkBox) {
+		for (var i = 0 ; i < this._opts.collidables.sinkBox.length ; ++i ) {
+			var lower = this._opts.collidables.sinkBox[i].lower;
+			var upper = this._opts.collidables.sinkBox[i].upper;
+			Collisions.SinkBox( particleAttributes, alive, delta_t, lower, upper);
+        }
+	}
+	
 };
 
 EulerUpdater.prototype.update = function ( particleAttributes, alive, delta_t ) {
