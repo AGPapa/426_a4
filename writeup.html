@@ -32,13 +32,13 @@
 (Your description of Euler goes here...)
 
 <p><hr><p><a name='Sphere+source'></a><h2>Sphere source</h2><p><hr><p>
-(Your description of Sphere source goes here...)
+Select a random point uniformally from the surface of a sphere, using the calculated phi value, as described in lecture. 
 
 <p><hr><p><a name='Animated+mesh'></a><h2>Animated mesh</h2><p><hr><p>
-(Your description of Animated mesh goes here...)
+First we enumerate all of the faces on the mesh, then we select a random face from all of the faces. From here, we linearly interpolate to select a random point from within the given triangle. 
 
 <p><hr><p><a name='Uniform+distribution'></a><h2>Uniform distribution</h2><p><hr><p>
-(Your description of Uniform distribution goes here...)
+Instead of selecting a random face, we first create weights for each face based on their respective areas. With these weights, we select a random face using a uniform distribution, and select a random point in the same fashion as before.
 
 <p><hr><p><a name='Ground+plane'></a><h2>Ground plane</h2><p><hr><p>
 (Your description of Ground plane goes here...)
@@ -53,10 +53,10 @@
 (Your description of Spring system goes here...)
 
 <p><hr><p><a name='Your+system'></a><h2>Your system</h2><p><hr><p>
-(Your description of Your system goes here...)
+First, we used the the built in tube module in the THREE library and a sin curve to create sinusoidal tubes. 
 
 <p><hr><p><a name='Rendering'></a><h2>Rendering</h2><p><hr><p>
-(Your description of Rendering goes here...)
+We darkened the blue component of the spherical source animation based on the time. This has the particles starting out light and darkening as they move further from the center. 
 
 <p><hr><p><a name='Art'></a><h2>Art</h2><p><hr><p>
 (Your description of Art goes here...)
