@@ -293,10 +293,10 @@ AnimationInitializer.prototype.initializePositions = function ( positions, toSpa
 
         var index = 0;
         var r = Math.random(), s = 0;
-        for(var i = 0; i < faceAreas.length; i++) {
-            s += faceAreas[i];
+        for(var j = 0; j < faceAreas.length; j++) {
+            s += faceAreas[j];
             if (r <= s) {
-                index = i;
+                index = j;
             }
         }
 
