@@ -279,7 +279,7 @@ AnimationInitializer.prototype.initializePositions = function ( positions, toSpa
         var theta = ab.angleTo(ac);
 
         //var ar = 0.5 * ab.length() * ac.length() * Math.abs(Math.cos(theta));
-		var ar = (ab.cross(ac)).length();
+		var ar = (ab.cross(ac)).length(); //2*area, but ok for this use
         faceAreas[i] = ar;
 
         sum += ar;
@@ -294,7 +294,7 @@ AnimationInitializer.prototype.initializePositions = function ( positions, toSpa
 
         var index = 0;
         var r = Math.random();
-		var s = 0;
+		var s = 0.0;
         for(var j = 0; j < faceAreas.length; j++) {
             s += faceAreas[j];
             if (r <= s) {

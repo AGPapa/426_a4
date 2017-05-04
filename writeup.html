@@ -36,10 +36,12 @@ Also, change the velocity of the particle based on how far it is away from each 
 Select a random point uniformally from the surface of a sphere, using the calculated phi value, as described in lecture. 
 
 <p><hr><p><a name='Animated+mesh'></a><h2>Animated mesh</h2><p><hr><p>
-First we enumerate all of the faces on the mesh, then we select a random face from all of the faces. From here, we linearly interpolate to select a random point from within the given triangle. 
+First we sum the areas of all faces on the mesh, then we select a random face weighted by those areas.
+ From here, we linearly interpolate to select a random point from within the given triangle. 
 
 <p><hr><p><a name='Uniform+distribution'></a><h2>Uniform distribution</h2><p><hr><p>
-Instead of selecting a random face, we first create weights for each face based on their respective areas. With these weights, we select a random face using a uniform distribution, and select a random point in the same fashion as before.
+Instead of selecting a random face, we first create weights for each face based on their respective areas.
+ With these weights, we select a random face using a uniform distribution, and select a random point in the same fashion as before.
 
 <p><hr><p><a name='Ground+plane'></a><h2>Ground plane</h2><p><hr><p>
 Check if the particle is under the plane and reflect and dampen if so.
@@ -62,7 +64,7 @@ We also have a sink box and a bounce box.
 We darkened the red and then the green component of the spherical source animation based on the time. This has the particles starting out light and darkening to blue. 
 
 <p><hr><p><a name='Art'></a><h2>Art</h2><p><hr><p>
-(Your description of Art goes here...)
+Our system is a fountain on two boxes, one is a bounce box and the other is a sink box.
 
     </div>
     </div>
