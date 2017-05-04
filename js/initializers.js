@@ -278,25 +278,28 @@ AnimationInitializer.prototype.initializePositions = function ( positions, toSpa
 
         var theta = ab.angleTo(ac);
 
-        var area = 0.5 * ab.length() * ac.length() * Math.abs(Math.cos(theta));
-        faceAreas[i] = area;
+        //var ar = 0.5 * ab.length() * ac.length() * Math.abs(Math.cos(theta));
+		var ar = (ab.cross(ac)).length();
+        faceAreas[i] = ar;
 
-        sum += area;
+        sum += ar;
     }
     for (var i = 0; i < faces.length; i++) {
         faceAreas[i] /= sum;
     }
-
+	
     for ( var i = 0 ; i < toSpawn.length ; ++i ) {
         // ----------- STUDENT CODE BEGIN ------------
         //var p = base_pos; 
 
         var index = 0;
-        var r = Math.random(), s = 0;
+        var r = Math.random();
+		var s = 0;
         for(var j = 0; j < faceAreas.length; j++) {
             s += faceAreas[j];
             if (r <= s) {
                 index = j;
+				break;
             }
         }
 
@@ -308,11 +311,6 @@ AnimationInitializer.prototype.initializePositions = function ( positions, toSpa
         var r1 = Math.random();
         var r2 = Math.random();
 
-        if (r1 + r2 >= 1.0) {
-            r1 = 1.0 - r1;
-            r2 = 1.0 - r2;
-        }
-
         var a = mesh.vertices[randomFace.a];
         var b = mesh.vertices[randomFace.b];
         var c = mesh.vertices[randomFace.c];
@@ -321,6 +319,7 @@ AnimationInitializer.prototype.initializePositions = function ( positions, toSpa
         p.add(b.multiplyScalar(Math.sqrt(r1) * (1.0-r2)));
         p.add(c.multiplyScalar(r2 * Math.sqrt(r1)));
         p.multiply(mesh.scale);
+
         setElement( i, positions, p );
         // ----------- STUDENT CODE END ------------
 
