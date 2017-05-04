@@ -29,7 +29,8 @@
         </ul></div>
 
 <p><hr><p><a name='Euler'></a><h2>Euler</h2><p><hr><p>
-(Your description of Euler goes here...)
+Change the velocity of the particle based on gravity (and delta_t).
+Also, change the velocity of the particle based on how far it is away from each attractor (inverse square). The attractor stops attracting once a particle is inside it's radius.
 
 <p><hr><p><a name='Sphere+source'></a><h2>Sphere source</h2><p><hr><p>
 Select a random point uniformally from the surface of a sphere, using the calculated phi value, as described in lecture. 
@@ -41,19 +42,21 @@ First we enumerate all of the faces on the mesh, then we select a random face fr
 Instead of selecting a random face, we first create weights for each face based on their respective areas. With these weights, we select a random face using a uniform distribution, and select a random point in the same fashion as before.
 
 <p><hr><p><a name='Ground+plane'></a><h2>Ground plane</h2><p><hr><p>
-(Your description of Ground plane goes here...)
+Check if the particle is under the plane and reflect and dampen if so.
 
 <p><hr><p><a name='Axis+box'></a><h2>Axis box</h2><p><hr><p>
-(Your description of Axis box goes here...)
+For sink box, we check if the particle is inside the box and kill it if it is.
+For bounce box we check if the particle is inside the box and which side it's closest too. Then we reflect and dampen according to the closest side.
 
 <p><hr><p><a name='Sphere+collision'></a><h2>Sphere collision</h2><p><hr><p>
-(Your description of Sphere collision goes here...)
+Check if the particle is inside the sphere, move it outside and change the velocity.
 
 <p><hr><p><a name='Spring+system'></a><h2>Spring system</h2><p><hr><p>
-(Your description of Spring system goes here...)
+Get the four neighbors for each 'particle' and compute hook's law with each neighbor. This is based on the spring constant and the distance. Then apply those four forces on the velocity of the particle.
 
 <p><hr><p><a name='Your+system'></a><h2>Your system</h2><p><hr><p>
-First, we used the the built in tube module in the THREE library and a sin curve to create sinusoidal tubes. 
+We used the the built in tube module in the THREE library and a sin curve to create sinusoidal tubes. 
+We also have a sink box and a bounce box.
 
 <p><hr><p><a name='Rendering'></a><h2>Rendering</h2><p><hr><p>
 We darkened the red and then the green component of the spherical source animation based on the time. This has the particles starting out light and darkening to blue. 

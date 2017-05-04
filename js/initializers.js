@@ -289,7 +289,7 @@ AnimationInitializer.prototype.initializePositions = function ( positions, toSpa
 
     for ( var i = 0 ; i < toSpawn.length ; ++i ) {
         // ----------- STUDENT CODE BEGIN ------------
-        //var p = base_pos;
+        //var p = base_pos; 
 
         var index = 0;
         var r = Math.random(), s = 0;
@@ -316,19 +316,6 @@ AnimationInitializer.prototype.initializePositions = function ( positions, toSpa
         var a = mesh.vertices[randomFace.a];
         var b = mesh.vertices[randomFace.b];
         var c = mesh.vertices[randomFace.c];
-
-        /*var ab = new THREE.Vector3(0.0,0.0,0.0);
-        var ac = new THREE.Vector3(0.0,0.0,0.0);
-
-        ab.subVectors(a, b);
-        ac.subVectors(a, c);
-
-        ab.multiplyScalar(r1);
-        ac.multiplyScalar(r2);
-
-        var p = a.add(ab);
-        p.add(ac);
-        p.multiply(mesh.scale);*/
 
         var p = a.multiplyScalar(1.0 - Math.sqrt(r1));
         p.add(b.multiplyScalar(Math.sqrt(r1) * (1.0-r2)));
